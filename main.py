@@ -1,3 +1,5 @@
+import os
+
 import requests
 from bs4 import BeautifulSoup
 from flask import Flask, render_template
@@ -20,13 +22,13 @@ def get_top_sellers():
     soup = BeautifulSoup(r.text, "html.parser")
     top_sellers = soup.findAll('a', attrs={'class': 'search_result_row ds_collapse_flag'})
     # print(top_sellers)
-    for top_seller in top_sellers:
-        print('Title :', top_seller.find('span', attrs={'class': 'title'}).text)
-        print('Image :', top_seller.find('div', attrs={'class': 'search_capsule'}).find('img'))
-        print('Price :', top_seller.find('div', attrs={'class': 'search_price'}).text)
+    # for top_seller in top_sellers:
+    #     print('Title :', top_seller.find('span', attrs={'class': 'title'}).text)
+    #     print('Image :', top_seller.find('div', attrs={'class': 'search_capsule'}).find('img'))
+    #     print('Price :', top_seller.find('div', attrs={'class': 'search_price'}).text)
 
     return render_template('grid_template.html', top_sellers=top_sellers)
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host=os.getenv('IP', '0.0.0.0'),port=int(os.getenv('PORT', 4444)))
